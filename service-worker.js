@@ -2,19 +2,19 @@
 // SERVICE WORKER - RADJA PRODUCTION PWA
 // ============================================
 
-const CACHE_NAME = 'radja-production-v3';
-const STATIC_CACHE = 'radja-static-v3';
+const CACHE_NAME = 'radja-production-v4';
+const STATIC_CACHE = 'radja-static-v4';
+const BASE = '/inventory';
 
-// TIDAK cache index.html agar selalu fresh
 const STATIC_ASSETS = [
-    '/manifest.json',
-    '/icon-192.png',
-    '/icon-512.png'
+    BASE + '/manifest.json',
+    BASE + '/icon-192.png',
+    BASE + '/icon-512.png'
 ];
 
 // ===== INSTALL =====
 self.addEventListener('install', event => {
-    console.log('[SW] Installing v3...');
+    console.log('[SW] Installing v4...');
     event.waitUntil(
         caches.open(STATIC_CACHE).then(cache => {
             console.log('[SW] Caching static assets');
@@ -25,7 +25,7 @@ self.addEventListener('install', event => {
 
 // ===== ACTIVATE =====
 self.addEventListener('activate', event => {
-    console.log('[SW] Activating v3...');
+    console.log('[SW] Activating v4...');
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
@@ -46,7 +46,7 @@ self.addEventListener('fetch', event => {
     const url = new URL(request.url);
 
     // index.html — SELALU dari network, jangan pernah cache
-    if (url.pathname === '/' || url.pathname === '/index.html') {
+    if (url.pathname === BASE + '/' || url.pathname === BASE + '/index.html' || url.pathname === BASE) {
         event.respondWith(fetch(request));
         return;
     }
