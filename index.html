@@ -6870,7 +6870,10 @@ ${docStyles}
     function exitApp() {
         showConfirm('Keluar dari aplikasi?', function() {
             window.close();
-            setTimeout(() => { location.replace('about:blank'); }, 200);
+            setTimeout(() => {
+                location.replace('about:blank');
+                setTimeout(() => { window.history.go(-(window.history.length)); }, 300);
+            }, 100);
         }, { title: 'EXIT', type: 'warning', icon: '🚪', ok: 'YA, KELUAR' });
     }
 
