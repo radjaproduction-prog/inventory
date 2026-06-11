@@ -6601,18 +6601,19 @@ ${docStyles}
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> MENGAMBIL DATA...';
             showToast('⏳ Menyiapkan backup...');
 
+            const safeQuery = async (fn) => { try { return await fn(); } catch { return { data: [] }; } };
             const [v, b, m, w, u, ri, riItems, trx, trxItems, pel, pengaturan] = await Promise.all([
-                sbClient.from('vendor').select('*').order('id'),
-                sbClient.from('brand').select('*').order('id'),
-                sbClient.from('model').select('*').order('id'),
-                sbClient.from('warna').select('*').order('id'),
-                sbClient.from('ukuran').select('*').order('id'),
-                sbClient.from('riwayat_input').select('*').order('id'),
-                sbClient.from('riwayat_input_item').select('*').order('id'),
-                sbClient.from('transaksi').select('*').order('id'),
-                sbClient.from('transaksi_item').select('*').order('id'),
-                sbClient.from('pelunasan').select('*').order('id').catch(() => ({ data: [] })),
-                sbClient.from('pengaturan').select('*'),
+                safeQuery(() => sbClient.from('vendor').select('*').order('id')),
+                safeQuery(() => sbClient.from('brand').select('*').order('id')),
+                safeQuery(() => sbClient.from('model').select('*').order('id')),
+                safeQuery(() => sbClient.from('warna').select('*').order('id')),
+                safeQuery(() => sbClient.from('ukuran').select('*').order('id')),
+                safeQuery(() => sbClient.from('riwayat_input').select('*').order('id')),
+                safeQuery(() => sbClient.from('riwayat_input_item').select('*').order('id')),
+                safeQuery(() => sbClient.from('transaksi').select('*').order('id')),
+                safeQuery(() => sbClient.from('transaksi_item').select('*').order('id')),
+                safeQuery(() => sbClient.from('pelunasan').select('*').order('id')),
+                safeQuery(() => sbClient.from('pengaturan').select('*')),
             ]);
 
             const backupData = {
